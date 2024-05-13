@@ -13,13 +13,15 @@ p1 <- function() preproc$corrected[[4]] |> lb(4) |> sub_mean_dyns() |> crop_spec
   bc_poly(1) |> image(legend = TRUE, xlim = c(4, 0.5),
                       legend.lab = "Spectral Intensity", legend.mar = 6.5,
                       legend.line = 3.5, plot_dim = "time_sec", cex.axis = 0.8,
-                      legend.cex = 0.8, axis.args = list(cex.axis = 0.7))
+                      legend.cex = 0.8, axis.args = list(cex.axis = 0.7),
+                      hline = c(3 * 60, 11 * 60))
 
 p2 <- function() preproc$mean_dataset |> lb(4) |> sub_mean_dyns() |> crop_spec() |>
   bc_poly(1) |> image(legend = TRUE, xlim = c(4, 0.5),
                       legend.lab = "Spectral Intensity", legend.mar = 6.5,
                       legend.line = 3.5, plot_dim = "time_sec", cex.axis = 0.8,
-                      legend.cex = 0.8, axis.args = list(cex.axis = 0.7))
+                      legend.cex = 0.8, axis.args = list(cex.axis = 0.7),
+                      hline = c(3 * 60, 11 * 60))
 
 # LINEWIDTH PLOTS
 
