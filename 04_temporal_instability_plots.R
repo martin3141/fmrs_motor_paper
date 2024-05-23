@@ -38,7 +38,7 @@ lw_mat <- sapply(preproc_full$res_list, (\(x) x$diag_table$lw_ppm))
 lw_mat_smo <- apply(lw_mat, 2, \(x) smooth.spline(x, spar = 0.8)$y)
 lw_mat_smo_perc_change <- apply(lw_mat_smo, 2, (\(x) 100 * ((x / x[1]) - 1)))
 
-stim_box <- gen_trap_rf(3 * 60, 8 * 60, "stim", preproc$mean_dataset)
+stim_box <- gen_trap_reg(3 * 60, 8 * 60, "stim", preproc$mean_dataset)
 
 lw_smo_df      <- lw_mat_smo |> data.frame() |> tidyr::gather()
 lw_smo_df$time <- stim_box$time

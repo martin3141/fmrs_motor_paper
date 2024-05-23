@@ -17,7 +17,7 @@ group_mrs <- group_mrs_unproc |> lb(2) |> crop_spec(xlim = c(4.3, 0.0)) |>
 drift <- group_mrs |> spec_op(xlim = c(1.97, 2.04), operator = "sum") |>
          smooth.spline(spar = 0.7) |> (\(x) x$y)()
 
-stim <- gen_trap_rf(3 * 60, 8 * 60, "stim", group_mrs)
+stim <- gen_trap_reg(3 * 60, 8 * 60, "stim", group_mrs)
 
 glm_spec_res <- glm_spec_paper(group_mrs, stim)
 
@@ -50,7 +50,7 @@ tiff(file.path("FIGURES", "Fig5.tiff"), width = 1000, height = 1600, res = 200)
 plot_grid(p1, p2, p3, labels = c('A', 'B', 'C'), label_size = 12, nrow = 3)
 dev.off()
 
-stim_lagged <- gen_trap_rf(5 * 60, 8 * 60, "stim", group_mrs) # lagged by 2 mins
+stim_lagged <- gen_trap_reg(5 * 60, 8 * 60, "stim", group_mrs) # lagged by 2 mins
 stim_lagged <- cbind(stim_lagged, drift)
 
 glm_spec_lagged_res <- glm_spec_paper(group_mrs, stim_lagged)

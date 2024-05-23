@@ -18,7 +18,7 @@ basis   <- sim_basis(mol_names, pul_seq = seq_slaser_ideal,
 
 fit_res <- fit_mrs(mean_proc, basis = basis)
 
-stim_box <- gen_trap_rf(3 * 60, 8 * 60, "stim", mean_proc)
+stim_box <- gen_trap_reg(3 * 60, 8 * 60, "stim", mean_proc)
 fit_res$res_tab$Time <- stim_box$time
 
 fit_res$res_tab$Lac_perc_change <- fit_res$res_tab$Lac /

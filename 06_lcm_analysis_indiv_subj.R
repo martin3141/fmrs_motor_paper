@@ -29,7 +29,7 @@ if (!file.exists(res_file)) {
 
 fit_res_list <- readRDS(res_file)
 
-stim_box <- gen_trap_rf(3 * 60, 8 * 60, "stim_box", fit_res_list[[1]]$data)
+stim_box <- gen_trap_reg(3 * 60, 8 * 60, "stim_box", fit_res_list[[1]]$data)
 
 fit_res_tab_list <- lapply(fit_res_list, \(x) x$res_tab)
 
