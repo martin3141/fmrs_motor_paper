@@ -207,6 +207,7 @@ preproc_fmrs_dataset_paper <- function(paths, labels = NULL,
   
   cut_res <- list(corrected = corrected_list, mean_dataset = mean_dataset,
                   labels = labels)
+  
   saveRDS(cut_res, file.path(output_dir, "preproc_corrected.rds"))
   
   return(res)
