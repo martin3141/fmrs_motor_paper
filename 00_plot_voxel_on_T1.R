@@ -1,3 +1,6 @@
+# write MRS voxel position as a nifti image to view with T1 and fMRI blobs
+# in fsleyes to confirm correct positioning
+
 library(spant)
 
 paths  <- Sys.glob(file.path("DATA", "sub-??", "mrs", "sub-??_svs.nii.gz"))
