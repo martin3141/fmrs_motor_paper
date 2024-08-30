@@ -37,16 +37,16 @@ for (n in 1:n_voxels) {
 orientation(standard)       <- "RAS"
 orientation(mean_voxel_std) <- "RAS"
 
-p1 <- \(x) ortho3(standard, mean_voxel_std, zlim_ol = c(0, 1), xyz = c(28, 52, 64))
+p1 <- \(x) ortho3(standard, mean_voxel_std, zlim_ol = c(0, 1),
+                  xyz = c(28, 52, 64), legend_axis_cex = 0.65)
 
 stat <- readNifti(file.path("FEAT_HL_FIXED_EFFECTS.gfeat", "cope1.feat",
                             "thresh_zstat1.nii.gz"))
 
 orientation(stat) <- "RAS"
 
-
-p2 <- \(x) ortho3(standard, stat, zlim_ol = c(14, 32), xyz = c(28, 52, 64))
-
+p2 <- \(x) ortho3(standard, stat, zlim_ol = c(14, 32),
+                  xyz = c(28, 52, 64), legend_axis_cex = 0.65)
 
 tiff(file.path("FIGURES", "SX.tiff"), width = 1500, height = 800, res = 200)
 plot_grid(p1, p2, labels = c('A', 'B'), label_size = 12, scale = 0.81,
