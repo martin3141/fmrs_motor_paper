@@ -70,7 +70,6 @@ fit_res$res_tab$Asp_perc_change <- fit_res$res_tab$Asp /
 fit_res$res_tab$Asp_sd <- fit_res$res_tab$Asp.sd /
                           fit_res$res_tab$Asp[1] * 100
 
-
 tiff(file.path("FIGURES", "S3.tiff"), width = 1000, height = 800, res = 200)
 ggplot(fit_res$res_tab, aes(x = Time, y = Asp_perc_change)) + 
   geom_point() + geom_line() + ylab("Asp change (%)") + xlab("Time (s)") +

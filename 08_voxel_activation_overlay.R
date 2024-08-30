@@ -48,7 +48,29 @@ orientation(stat) <- "RAS"
 p2 <- \(x) ortho3(standard, stat, zlim_ol = c(14, 32),
                   xyz = c(28, 52, 64), legend_axis_cex = 0.65)
 
-tiff(file.path("FIGURES", "SX.tiff"), width = 1500, height = 800, res = 200)
-plot_grid(p1, p2, labels = c('A', 'B'), label_size = 12, scale = 0.81,
-          label_colour = "white")
+mrs <- read_mrs(mrs_paths[19])
+mrs_ref  <- mrs |> mean_dyns() |> align(2.01) |> phase(20)
+mrs_proc <- mrs |> rats(mrs_ref)
+
+block_dyn <- mrs_proc |> mean_dyn_blocks(50) |> get_dyns(1) |> zf()
+all_dyn   <- mrs_proc |> mean_dyns() |> zf()
+
+p3 <- function() {
+  par(bg = "black", fg = "white", col.axis = "white", col.lab = "white",
+      cex.axis = 0.8, cex.lab = 0.8)
+  plot(block_dyn, xlim = c(4, 0.5), col = viridisLite::viridis(2)[2],
+       grid_nx = NA, lwd = 0.8)
+}
+
+p4 <- function() {
+  par(bg = "black", fg = "white", col.axis = "white", col.lab = "white",
+      cex.axis = 0.8, cex.lab = 0.8)
+  plot(all_dyn, xlim = c(4, 0.5), col = viridisLite::viridis(2)[2],
+       grid_nx = NA, lwd = 0.8)
+}
+
+tiff(file.path("FIGURES", "Fig1.tiff"), width = 1500, height = 1200, res = 200)
+plot_grid(p1, p2, p3, p4, labels = c('A', 'B', 'C', 'D'), label_size = 12,
+          scale = 0.81, label_colour = c("white"))
 dev.off()
+
