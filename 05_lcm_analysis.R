@@ -1,6 +1,7 @@
 library(spant)
 library(ggplot2)
 library(cowplot)
+library(ggsignif)
 
 theme_set(theme_bw())
 
@@ -54,3 +55,23 @@ dev.off()
 
 t.test(fit_res$res_tab$Lac[3:7], fit_res$res_tab$Lac[c(1, 2, 8:15)])
 t.test(fit_res$res_tab$Glu[3:7], fit_res$res_tab$Glu[c(1, 2, 8:15)])
+
+# state      <- rep("REST", 15)
+# state[3:7] <- "TASK"
+# lac_tab <- data.frame(Lac = fit_res$res_tab$Lac_perc_change, state = state)
+# 
+# p3 <- ggplot(lac_tab, aes(x = state, y = Lac)) + geom_point() +
+#   geom_signif(comparisons = list(c("REST", "TASK")), test = "t.test",
+#               map_signif_level = function(p) sprintf("p = %.2g", p),
+#               textsize = 3) + xlab(NULL) + ylab("Lactate change (%)")
+# 
+# glu_tab <- data.frame(Glu = fit_res$res_tab$Glu_perc_change, state = state)
+# p4 <- ggplot(glu_tab, aes(x = state, y = Glu)) + geom_point() +
+#   geom_signif(comparisons = list(c("REST", "TASK")), test = "t.test",
+#               map_signif_level = function(p) sprintf("p = %.2g", p),
+#               textsize = 3) + xlab(NULL) + ylab("Glutamate change (%)")
+# 
+# tiff(file.path("FIGURES", "FigSY.tiff"), width = 1500, height = 700, res = 200)
+# plot_grid(p3, p4, labels = c('A', 'B'), label_size = 12)
+# dev.off()
+

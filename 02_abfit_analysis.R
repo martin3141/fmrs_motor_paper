@@ -1,6 +1,7 @@
 library(spant)
 library(ggplot2)
 library(cowplot)
+library(ggsignif)
 
 theme_set(theme_bw())
 
@@ -13,8 +14,8 @@ mean_proc <- preproc$mean_dataset |> mean_dyn_blocks(block_size)
 
 mol_names <- get_1h_brain_basis_names(add = c("gly", "peth"))
 
-basis   <- sim_basis(mol_names, pul_seq = seq_slaser_ideal,
-                     acq_paras = mean_proc)
+basis     <- sim_basis(mol_names, pul_seq = seq_slaser_ideal,
+                       acq_paras = mean_proc)
 
 fit_res <- fit_mrs(mean_proc, basis = basis)
 
@@ -77,4 +78,23 @@ ggplot(fit_res$res_tab, aes(x = Time, y = Asp_perc_change)) +
            ymax = Inf, alpha = 0.4, fill = "red") + ylim(c(-15, 15)) +
   geom_errorbar(aes(ymin = Asp_perc_change - Asp_sd,
                     ymax = Asp_perc_change + Asp_sd))
+dev.off()
+
+state      <- rep("REST", 15)
+state[3:7] <- "TASK"
+lac_tab <- data.frame(Lac = fit_res$res_tab$Lac_perc_change, state = state)
+
+p3 <- ggplot(lac_tab, aes(x = state, y = Lac)) + geom_point() +
+  geom_signif(comparisons = list(c("REST", "TASK")), test = "t.test",
+              map_signif_level = function(p) sprintf("p = %.2g", p),
+              textsize = 3) + xlab(NULL) + ylab("Lactate change (%)")
+
+glu_tab <- data.frame(Glu = fit_res$res_tab$Glu_perc_change, state = state)
+p4 <- ggplot(glu_tab, aes(x = state, y = Glu)) + geom_point() +
+  geom_signif(comparisons = list(c("REST", "TASK")), test = "t.test",
+              map_signif_level = function(p) sprintf("p = %.2g", p),
+              textsize = 3) + xlab(NULL) + ylab("Glutamate change (%)")
+
+tiff(file.path("FIGURES", "FigSX.tiff"), width = 1500, height = 700, res = 200)
+plot_grid(p3, p4, labels = c('A', 'B'), label_size = 12)
 dev.off()
