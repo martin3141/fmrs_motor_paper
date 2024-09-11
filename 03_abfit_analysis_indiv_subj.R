@@ -74,7 +74,6 @@ dev.off()
 t.test(lac_mean[3:7], lac_mean[c(1, 2, 8:15)])
 t.test(glu_mean[3:7], glu_mean[c(1, 2, 8:15)])
 
-
 asp_mat  <- sapply(fit_res_tab_list, \(x) x$Asp)
 asp_mean <- apply(asp_mat, 1, mean)
 asp_sd   <- apply(asp_mat, 1, sd) / (19 ^ 0.5)
@@ -84,7 +83,6 @@ asp_perc_change_sd   <- asp_sd   / asp_mean[1] * 100
 
 asp_df <- data.frame(time = stim_box$time, asp_mean_perc_change,
                      asp_perc_change_sd)
-
 
 state      <- rep("REST", 15)
 state[3:7] <- "TASK"
@@ -101,16 +99,49 @@ p4 <- ggplot(glu_tab, aes(x = state, y = Glu)) + geom_point() +
               map_signif_level = function(p) sprintf("p = %.2g", p),
               textsize = 3) + xlab(NULL) + ylab("Glutamate change (%)")
 
-tiff(file.path("FIGURES", "FigSY.tiff"), width = 1500, height = 700, res = 200)
+tiff(file.path("FIGURES", "FigS3.tiff"), width = 1500, height = 700, res = 200)
 plot_grid(p3, p4, labels = c('A', 'B'), label_size = 12)
 dev.off()
 
+# linear mixed effects model and plots suggested by reviewer 1
+lac_df_long <- data.frame(lac = as.numeric(lac_mat), time = stim_box$time,
+                          state = factor(state),
+                          sub = factor(rep(preproc$labels, each = 15)))
+
+p5 <- ggplot(lac_df_long, aes(x = time, y = lac, col = sub)) + geom_line() +
+      theme(legend.position="none") + ylab("Lac / tCr") + xlab("Time (s)") +
+      annotate("rect", xmin = 3 * 60, xmax = 3 * 60 + 8 * 60, ymin = -Inf,
+               ymax = Inf, alpha = 0.4, fill = "red") 
+
+glu_df_long <- data.frame(glu = as.numeric(glu_mat), time = stim_box$time,
+                          state = factor(state),
+                          sub = factor(rep(preproc$labels, each = 15)))
+
+p6 <- ggplot(glu_df_long, aes(x = time, y = glu, col = sub)) + geom_line() + 
+      theme(legend.position="none") + ylab("Glu / tCr") + xlab("Time (s)") +
+      annotate("rect", xmin = 3 * 60, xmax = 3 * 60 + 8 * 60, ymin = -Inf,
+               ymax = Inf, alpha = 0.4, fill = "red") 
+
+tiff(file.path("FIGURES", "FigS4.tiff"), width = 1500, height = 700, res = 200)
+plot_grid(p5, p6, labels = c('A', 'B'), label_size = 12)
+dev.off()
+
+
+library(nlme)
+lme(lac ~ state, random =~1|sub, lac_df_long) |> anova()
+lme(glu ~ state, random =~1|sub, glu_df_long) |> anova()
+
+
+tiff(file.path("FIGURES", "mean_spectra_good.tiff"), width = 1000, height = 1200, res = 200)
+preproc$corrected |> mean_dyns() |> stackplot(xlim = c(4, 0.5), y_offset = 12,
+                                              label = preproc$labels)
+dev.off()
 
 
 
 break
 
-
+lac_mat |> image()
 
 
 mean_proc <- preproc$mean_dataset |> mean_dyn_blocks(block_size)

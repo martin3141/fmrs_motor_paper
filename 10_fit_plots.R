@@ -22,7 +22,7 @@ fit_res_abfit <- fit_mrs(first_dyn, basis = basis)
 fit_res_lcm   <- fit_mrs(first_dyn, basis = basis, method = "LCMODEL",
                          opts = c("NSIMUL=0"))
 
-tiff(file.path("FIGURES", "FigSZ.tiff"), width = 1500, height = 700, res = 200)
-plot_grid(~plot(fit_res_abfit), ~plot(fit_res_lcm),
-          labels = c('A', 'B'), label_size = 12)
+tiff(file.path("FIGURES", "FigS1.tiff"), width = 1500, height = 700, res = 200)
+plot_grid(~plot(fit_res_abfit), ~plot(fit_res_lcm), labels = c('A', 'B'),
+          label_size = 12)
 dev.off()

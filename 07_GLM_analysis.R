@@ -21,16 +21,20 @@ stim <- gen_trap_reg(3 * 60, 8 * 60, "stim", group_mrs)
 
 glm_spec_res <- glm_spec_paper(group_mrs, stim)
 
+# glm_spec_res$p_value_log_mrs |> crop_spec(xlim = c(4, 0.2)) |> Npts()
+# data has 479 in plotted spectral region therefore p < 0.05 / 479 is needed
+# to correct for multiple comparisons (p < 1e-4)
+
 p1 <- function() plot(glm_spec_res$p_value_log_mrs, y_scale = TRUE,
                       mar = c(2, 3, 1, 3.5), yaxis_lab = "-log10(p-value)",
-                      xlim = c(4, 0.2))
+                      xlim = c(4, 0.2), hline = 4, hline_lty = 2)
 
 stim_nuisance         <- cbind(stim, drift)
 glm_spec_nuisance_res <- glm_spec_paper(group_mrs, stim_nuisance)
 
 p2 <- function() plot(glm_spec_nuisance_res$p_value_log_mrs, y_scale = TRUE,
                       mar = c(2, 3, 1, 3.5), yaxis_lab = "-log10(p-value)",
-                      xlim = c(4, 0.2))
+                      xlim = c(4, 0.2), hline = 4, hline_lty = 2)
 
 metab_sim <- sim_basis(c("lac", "glu", "asp"), acq_paras = group_mrs_unproc,
                        pul_seq = seq_slaser_ideal) |> lb(2) |> basis2mrs_data()
@@ -57,7 +61,8 @@ glm_spec_lagged_res <- glm_spec_paper(group_mrs, stim_lagged)
 
 p4 <- function() plot(glm_spec_lagged_res$p_value_log_mrs, y_scale = TRUE,
                       mar = c(2, 3, 1, 3.5), yaxis_lab = "-log10(p-value)",
-                      vline = vlines, vline_lty = 3, xlim = c(4, 0.2))
+                      vline = vlines, vline_lty = 3, xlim = c(4, 0.2),
+                      hline = 4, hline_lty = 2)
 
 p5 <- function() ref_spec |> stackplot(labels = c("Lac", "Glu", "Asp", "Mean"),
                                        y_offset = 35, mar = c(3, 3, 1, 3.5),
@@ -75,3 +80,13 @@ p6 <- function() plot(glm_spec_lagged_res$beta_weight_mrs, y_scale = TRUE,
 tiff(file.path("FIGURES", "FigS4.tiff"), width = 1000, height = 1100, res = 200)
 plot_grid(p6, p5, labels = c('A', 'B'), label_size = 12, nrow = 2)
 dev.off()
+
+tiff(file.path("FIGURES", "FigS7.tiff"), width = 1000, height = 1000, res = 200)
+drift_sc  <- drift - mean(drift)
+drift_sc  <- drift_sc / max(drift_sc)
+design_df <- cbind(stim, stim_lagged[,2], drift_sc)
+colnames(design_df)[3] <- "stim_lagged"
+colnames(design_df)[4] <- "nuisance"
+plot_reg(design_df)
+dev.off()
+

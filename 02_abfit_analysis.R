@@ -71,7 +71,7 @@ fit_res$res_tab$Asp_perc_change <- fit_res$res_tab$Asp /
 fit_res$res_tab$Asp_sd <- fit_res$res_tab$Asp.sd /
                           fit_res$res_tab$Asp[1] * 100
 
-tiff(file.path("FIGURES", "S3.tiff"), width = 1000, height = 800, res = 200)
+tiff(file.path("FIGURES", "FigS3.tiff"), width = 1000, height = 800, res = 200)
 ggplot(fit_res$res_tab, aes(x = Time, y = Asp_perc_change)) + 
   geom_point() + geom_line() + ylab("Asp change (%)") + xlab("Time (s)") +
   annotate("rect", xmin = 3 * 60, xmax = 3 * 60 + 8 * 60, ymin = -Inf,
@@ -95,6 +95,6 @@ p4 <- ggplot(glu_tab, aes(x = state, y = Glu)) + geom_point() +
               map_signif_level = function(p) sprintf("p = %.2g", p),
               textsize = 3) + xlab(NULL) + ylab("Glutamate change (%)")
 
-tiff(file.path("FIGURES", "FigSX.tiff"), width = 1500, height = 700, res = 200)
+tiff(file.path("FIGURES", "FigS2.tiff"), width = 1500, height = 700, res = 200)
 plot_grid(p3, p4, labels = c('A', 'B'), label_size = 12)
 dev.off()
