@@ -1,7 +1,7 @@
 library(spant)
 library(RNifti)
-library(fslr)
 library(cowplot)
+library(RNiftyReg)
 
 options(fsl.path = "/Users/martinwilson/fsl")
 
@@ -19,13 +19,21 @@ mrs_paths     <- Sys.glob(file.path(dirname(dirname(feat_paths)), "mrs",
 hr2std_paths  <- file.path(feat_paths, "reg", "highres2standard.mat")
 
 n_voxels <- length(feat_paths)
+
 for (n in 1:n_voxels) {
   mrs     <- read_mrs(mrs_paths[n])
   highres <- readNifti(highres_paths[n])
   voxel   <- get_svs_voi(mrs, highres)
   
-  voxel_std <- flirt_apply(infile = voxel, reffile = standard_path,
-                           initmat = hr2std_paths[n])
+  # read the FSL matrix
+  affine <- readAffine(hr2std_paths[n], source = highres,
+                       target = standard, type = "fsl")
+  voxel_std <- applyTransform(affine, voxel, interpolation = 0L)
+  
+  # FLIRT / FSLR version to check for consistency
+  # library(fslr)
+  # voxel_std <- flirt_apply(infile = voxel, reffile = standard_path,
+  #                          initmat = hr2std_paths[n])
   
   if (n == 1) {
     mean_voxel_std <- voxel_std / n_voxels
