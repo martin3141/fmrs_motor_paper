@@ -3,8 +3,6 @@ library(RNifti)
 library(cowplot)
 library(RNiftyReg)
 
-options(fsl.path = "/Users/martinwilson/fsl")
-
 # path to MNI152 template image
 standard_path <- file.path("FEAT_HL_FIXED_EFFECTS.gfeat", "bg_image.nii.gz")
 standard      <- readNifti(standard_path)
