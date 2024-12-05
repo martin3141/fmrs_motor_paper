@@ -71,7 +71,7 @@ tiff(file.path("FIGURES", "S2.tiff"), width = 1500, height = 800, res = 200)
 plot_grid(p1, p2, labels = c('A', 'B'), label_size = 12)
 dev.off()
 
-# Welsh
+# Welch
 t.test(glu_mean[3:7], glu_mean[c(1, 2, 8:15)], var.equal = FALSE)
 t.test(lac_mean[3:7], lac_mean[c(1, 2, 8:15)], var.equal = FALSE)
 

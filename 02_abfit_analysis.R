@@ -58,7 +58,7 @@ tiff(file.path("FIGURES", "Fig2.tiff"), width = 1500, height = 800, res = 200)
 plot_grid(p1, p2, labels = c('A', 'B'), label_size = 12)
 dev.off()
 
-# Welsh
+# Welch
 t.test(fit_res$res_tab$Lac[3:7], fit_res$res_tab$Lac[c(1, 2, 8:15)],    var.equal = FALSE)
 t.test(fit_res$res_tab$Glu[3:7], fit_res$res_tab$Glu[c(1, 2, 8:15)],    var.equal = FALSE)
 t.test(fit_res$res_tab$Asp[3:7], fit_res$res_tab$Asp[c(1, 2, 8:15)],    var.equal = FALSE)
