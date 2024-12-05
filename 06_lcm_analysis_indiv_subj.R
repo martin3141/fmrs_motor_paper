@@ -71,5 +71,11 @@ tiff(file.path("FIGURES", "S2.tiff"), width = 1500, height = 800, res = 200)
 plot_grid(p1, p2, labels = c('A', 'B'), label_size = 12)
 dev.off()
 
-t.test(glu_mean[3:7], glu_mean[c(1, 2, 8:15)])
-t.test(lac_mean[3:7], lac_mean[c(1, 2, 8:15)])
+# Welsh
+t.test(glu_mean[3:7], glu_mean[c(1, 2, 8:15)], var.equal = FALSE)
+t.test(lac_mean[3:7], lac_mean[c(1, 2, 8:15)], var.equal = FALSE)
+
+# Student's
+# n.b. reviewer 1 prefers Student's t-tests, so here they are. I'm not p-hacking!
+t.test(glu_mean[3:7], glu_mean[c(1, 2, 8:15)], var.equal = TRUE)
+t.test(lac_mean[3:7], lac_mean[c(1, 2, 8:15)], var.equal = TRUE)

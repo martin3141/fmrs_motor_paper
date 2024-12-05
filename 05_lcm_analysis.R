@@ -53,8 +53,14 @@ tiff(file.path("FIGURES", "S1.tiff"), width = 1500, height = 800, res = 200)
 plot_grid(p1, p2, labels = c('A', 'B'), label_size = 12)
 dev.off()
 
-t.test(fit_res$res_tab$Lac[3:7], fit_res$res_tab$Lac[c(1, 2, 8:15)])
-t.test(fit_res$res_tab$Glu[3:7], fit_res$res_tab$Glu[c(1, 2, 8:15)])
+# Welsh
+t.test(fit_res$res_tab$Lac[3:7], fit_res$res_tab$Lac[c(1, 2, 8:15)], var.equal = FALSE)
+t.test(fit_res$res_tab$Glu[3:7], fit_res$res_tab$Glu[c(1, 2, 8:15)], var.equal = FALSE)
+
+# Student's
+# n.b. reviewer 1 prefers Student's t-tests, so here they are. I'm not p-hacking!
+t.test(fit_res$res_tab$Lac[3:7], fit_res$res_tab$Lac[c(1, 2, 8:15)], var.equal = TRUE)
+t.test(fit_res$res_tab$Glu[3:7], fit_res$res_tab$Glu[c(1, 2, 8:15)], var.equal = TRUE)
 
 # state      <- rep("REST", 15)
 # state[3:7] <- "TASK"
